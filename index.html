@@ -15,11 +15,33 @@
             text-align: center;
             background-color: #121212;
             color: white;
+            padding: 20px;
         }
         .container {
             margin: 20px auto;
             width: 80%;
             max-width: 600px;
+        }
+        .notice {
+            background-color: #1e1e1e;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #bbb;
+        }
+        .file-input {
+            display: none;
+        }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
         }
         canvas {
             border: 1px solid white;
@@ -69,13 +91,17 @@
 </head>
 <body>
     <div class="container">
+        <div class="notice">
+            🔒 This tool runs completely on your device. No data is uploaded or sent to any server. Your privacy is 100% protected.
+        </div>
         <h1>PDF Dark Mode Converter</h1>
-        <input type="file" id="fileInput" accept="application/pdf">
+        <label for="fileInput" class="custom-file-upload">Choose PDF File</label>
+        <input type="file" id="fileInput" class="file-input" accept="application/pdf">
         <div id="progressContainer">
             <div id="progressBar"></div>
             <div id="progressText">0/0</div>
         </div>
-        <button id="downloadBtn">Download Dark Mode PDF</button>
+        <button id="downloadBtn">Download failed? Click here</button>
         <div id="pdfContainer"></div>
     </div>
 
@@ -106,7 +132,7 @@
 
             for (let i = 0; i < pdf.numPages; i++) {
                 progressBar.style.width = `${((i + 1) / pdf.numPages) * 100}%`;
-                progressText.innerText = `${i + 1}/${pdf.numPages}`;
+                progressText.innerText = (i + 1 === pdf.numPages) ? "Finalizing... Almost done!" : `${i + 1}/${pdf.numPages}`;
 
                 const page = await pdf.getPage(i + 1);
                 const scale = 1.5;
@@ -149,10 +175,10 @@
             }
             modifiedPdfBytes = await pdfDoc.save();
             document.getElementById('progressContainer').style.display = 'none';
-            document.getElementById('downloadBtn').style.display = 'block';
+            triggerDownload();
         }
 
-        document.getElementById('downloadBtn').addEventListener('click', function() {
+        function triggerDownload() {
             if (modifiedPdfBytes) {
                 const blob = new Blob([modifiedPdfBytes], { type: 'application/pdf' });
                 const link = document.createElement('a');
@@ -161,8 +187,12 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
+
+                document.getElementById('downloadBtn').style.display = 'block';
             }
-        });
+        }
+
+        document.getElementById('downloadBtn').addEventListener('click', triggerDownload);
     </script>
 </body>
 </html>
