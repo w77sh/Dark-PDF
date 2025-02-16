@@ -3,13 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Dark Mode Converter</title>
-    <script src="lib/pdf.min.js"></script>
+    <title>Online PDF Dark Mode Converter - No Upload Needed</title>
+    <meta name="description" content="Convert PDFs to dark mode instantly. This tool processes PDFs locally on your device, ensuring privacy and fast performance.">
+    <meta name="keywords" content="PDF dark mode, PDF inverter, PDF night mode, online PDF converter">
+    <meta name="author" content="Chizkiyahu">
+    <meta property="og:title" content="PDF Dark Mode Converter - No Upload Needed">
+    <meta property="og:description" content="Convert PDFs to dark mode instantly with this privacy-focused tool.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/Chizkiyahu/pdf-dark-mode-converter">
+    <script src="lib/pdf.min.js" ></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc = "lib/pdf.worker.min.js";
     </script>
-    <script src="lib/pdf-lib.min.js"></script>
-     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <script src="lib/pdf-lib.min.js" defer></script>
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,18 +26,19 @@
             padding: 20px;
         }
         html, body {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          height: 100%;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
         }
         .notice {
             background-color: #1e1e1e;
             padding: 10px;
             border-radius: 5px;
-            margin-bottom: 20px;
+            margin: 20px auto 20px auto;
             font-size: 14px;
             color: #bbb;
+            max-width: 80%;
         }
         .file-input {
             display: none;
@@ -94,16 +102,32 @@
             border-radius: 5px;
         }
         .github-ribbon {
-            position: absolute;
-            top: 0;
-            left: 0;
+            position: fixed;
+            top: 20px;
+            left: 20px;
             z-index: 1000;
+        }
+        @media (max-width: 768px) {
+            .github-ribbon {
+                top: auto;
+                bottom: 20px;
+                right: 10px;
+                left: auto;
+            }
+            .github-ribbon img {
+                width: 100px;
+                height: auto;
+            }
+            .notice {
+                font-size: 12px;
+                margin-top: 50px;
+            }
         }
     </style>
 </head>
 <body>
     <a href="https://github.com/Chizkiyahu/pdf-dark-mode-converter" class="github-ribbon">
-        <img decoding="async" width="149" height="149" src="./img/forkme_left_red_aa0000.png" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy">
+        <img decoding="async" width="149" height="149" src="./img/forkme_left_red_aa0000.png" alt="View Source Code on GitHub" loading="lazy">
     </a>
     <div class="container">
         <div class="notice">
