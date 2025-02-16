@@ -17,10 +17,11 @@
             color: white;
             padding: 20px;
         }
-        .container {
-            margin: 20px auto;
-            width: 80%;
-            max-width: 600px;
+        html, body {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          height: 100%;
         }
         .notice {
             background-color: #1e1e1e;
@@ -61,7 +62,7 @@
         #progressBar {
             height: 20px;
             background-color: #007bff;
-            width: 0%;
+            width: 0;
             text-align: center;
             line-height: 20px;
             color: white;
@@ -109,16 +110,30 @@
         let modifiedPdfBytes;
         let originalFileName = "";
 
-        document.getElementById('fileInput').addEventListener('change', async function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                originalFileName = file.name.replace(/\.pdf$/i, '');
-                const fileReader = new FileReader();
-                fileReader.onload = async function() {
-                    document.getElementById('progressContainer').style.display = 'block';
-                    await renderPDF(new Uint8Array(this.result));
-                };
-                fileReader.readAsArrayBuffer(file);
+        function handleFile(file) {
+            originalFileName = file.name.replace(/\.pdf$/i, '');
+            const fileReader = new FileReader();
+            fileReader.onload = async function() {
+                document.getElementById('progressContainer').style.display = 'block';
+                await renderPDF(new Uint8Array(this.result));
+            };
+            fileReader.readAsArrayBuffer(file);
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            if (event.target.files.length > 0) {
+                handleFile(event.target.files[0]);
+            }
+        });
+
+        document.body.addEventListener('dragover', function(event) {
+            event.preventDefault();
+        });
+
+        document.body.addEventListener('drop', function(event) {
+            event.preventDefault();
+            if (event.dataTransfer.files.length > 0) {
+                handleFile(event.dataTransfer.files[0]);
             }
         });
 
