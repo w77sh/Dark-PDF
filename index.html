@@ -3,182 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convert PDFs to Dark Mode – Secure, Local & Private Offline Tool</title>
-    <meta name="description" content="Instantly convert your PDFs to dark mode with our free, privacy-focused offline tool. Enjoy a comfortable night mode reading experience without any uploads—your data stays local and secure.">
-    <meta name="keywords" content="PDF dark mode, dark mode PDF, offline PDF converter, local PDF conversion, private PDF tool, secure PDF reader, night mode PDF, no-upload PDF converter">
-    <meta name="author" content="Chizkiyahu">
-    <meta property="og:title" content="Convert PDFs to Dark Mode – Secure, Local & Private Offline Tool">
-    <meta property="og:description" content="Easily convert PDFs to dark mode with our free, no-upload tool. Reduce eye strain while keeping your documents private with local conversion.">
-    <meta property="og:url" content="https://chizkiyahu.github.io/pdf-dark-mode-converter/">
+    <title>PDF Dark Mode Converter - CLI Style</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <style>
+        /* Matrix background animation */
+        body {
+            font-family: "Courier New", Courier, monospace;
+            background: black;
+            color: #00ff00;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "PDF Dark Mode Converter",
-      "description": "A free online tool to convert PDFs to dark mode, reducing eye strain.",
-      "applicationCategory": "Utility",
-      "operatingSystem": "Web-based",
-      "url": "https://chizkiyahu.github.io/pdf-dark-mode-converter/",
-      "author": {
-        "@type": "Person",
-        "name": "Chizkiyahu"
-      }
-    }
-    </script>
+        body.light-mode {
+            background: white;
+            color: black;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        body.light-mode canvas {
+            filter: invert(1);
+        }
+
+        .container {
+            border: 2px solid #00ff00;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+            background-color: rgba(18, 18, 18, 0.9);
+            box-shadow: 0 0 10px #00ff00;
+            overflow: hidden;
+        }
+
+        body.light-mode .container {
+            border: 2px solid black;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 10px black;
+        }
+
+        .notice {
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: #00ff00;
+        }
+
+        body.light-mode .notice {
+            color: black;
+        }
+
+        .upload-btn {
+            background: none;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-size: 16px;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: background 0.3s, color 0.3s;
+            margin: 5px;
+        }
+
+        body.light-mode .upload-btn {
+            border: 2px solid black;
+            color: black;
+        }
+
+        .upload-btn:hover {
+            background: #00ff00;
+            color: black;
+        }
+
+        body.light-mode .upload-btn:hover {
+            background: black;
+            color: white;
+        }
+
+        #progressContainer {
+            margin-top: 20px;
+            display: none;
+        }
+
+        #progressBar {
+            height: 20px;
+            background-color: #00ff00;
+            width: 0;
+            border-radius: 5px;
+            transition: width 0.3s ease-in-out;
+        }
+
+        body.light-mode #progressBar {
+            background-color: black;
+        }
+
+        #progressText {
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        #pdfContainer {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #00ff00;
+            padding: 10px;
+        }
+
+        body.light-mode #pdfContainer {
+            border: 1px solid black;
+        }
+
+        #pdfContainer canvas {
+            border: 1px solid #00ff00;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        body.light-mode #pdfContainer canvas {
+            border: 1px solid black;
+        }
+
+        #downloadBtn {
+            display: none;
+            margin-top: 20px;
+            color: #00ff00;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        body.light-mode #downloadBtn {
+            color: black;
+        }
+
+        /* GitHub icon styling */
+        .github-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .github-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .github-icon svg {
+            fill: #00ff00;
+            width: 100%;
+            height: 100%;
+        }
+
+        body.light-mode .github-icon svg {
+            fill: black;
+        }
+
+        /* Toggle icon styling */
+        .toggle-icon {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .toggle-icon svg {
+            fill: #00ff00;
+            width: 100%;
+            height: 100%;
+        }
+
+        body.light-mode .toggle-icon svg {
+            fill: black;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #00ff00;
+            text-align: center;
+        }
+
+        body.light-mode footer {
+            color: black;
+        }
+
+        footer a {
+            color: #00ff00;
+            text-decoration: underline;
+        }
+
+        body.light-mode footer a {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrixCanvas"></canvas>
+    
+    <!-- Toggle Icon in Corner -->
+    <div class="toggle-icon" id="toggleThemeIcon" title="Toggle Light/Dark Mode">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <path d="M8 0a7.5 7.5 0 1 0 7.5 7.5A7.5 7.5 0 0 0 8 0zm0 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"></path>
+        </svg>
+    </div>
+
+    <!-- GitHub Icon in Corner -->
+    <a href="https://github.com/w77sh" target="_blank" rel="noopener noreferrer" class="github-icon" title="Visit my GitHub">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+    </a>
+    
+    <div class="container">
+        <div class="notice">
+            🔒 This tool runs completely on your device. No data is uploaded or sent to any server. Your privacy is 100% protected.
+        </div>
+        <input type="file" id="fileInput" class="file-input" accept="application/pdf" style="display: none;">
+        <button class="upload-btn" id="uploadBtn">Upload PDF</button>
+        <div id="progressContainer">
+            <div id="progressBar"></div>
+            <div id="progressText">0%</div>
+        </div>
+        <div id="pdfContainer"></div>
+        <div id="downloadBtn">Download failed? Click here</div>
+    </div>
+
+    <footer>
+        Made with ❤️ by <a href="https://github.com/w77sh" target="_blank">w77sh</a>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
         pdfjsLib.GlobalWorkerOptions.workerSrc ="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.11.0/pdf-lib.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #121212;
-            color: white;
-            padding: 20px;
-        }
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-        }
-        .notice {
-            background-color: #1e1e1e;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 20px auto 20px auto;
-            font-size: 14px;
-            color: #bbb;
-            max-width: 80%;
-        }
-        .file-input {
-            display: none;
-        }
-        .custom-file-upload {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        canvas {
-            border: 1px solid white;
-            margin-top: 10px;
-            width: 100%;
-        }
-        #pdfContainer {
-            width: 70%;
-            margin: 0 auto;
-        }
-        #progressContainer {
-            width: 80%;
-            max-width: 400px;
-            background-color: #222;
-            display: none;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 20px auto;
-            text-align: center;
-        }
-        #progressBar {
-            height: 20px;
-            background-color: #007bff;
-            width: 0;
-            text-align: center;
-            line-height: 20px;
-            color: white;
-            border-radius: 5px;
-            transition: width 0.3s ease-in-out;
-        }
-        #progressText {
-            margin-top: 5px;
-            color: white;
-            font-weight: bold;
-        }
-        #downloadBtn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: none;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 16px;
-            border-radius: 5px;
-        }
-        .github-ribbon {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-        }
-        @media (max-width: 768px) {
-            .github-ribbon {
-                top: auto;
-                bottom: 20px;
-                right: 10px;
-                left: auto;
-            }
-            .github-ribbon img {
-                width: 100px;
-                height: auto;
-            }
-            .notice {
-                font-size: 12px;
-                margin-top: 50px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <a href="https://github.com/Chizkiyahu/pdf-dark-mode-converter" class="github-ribbon">
-        <img decoding="async" width="149" height="149" src="./img/forkme_left_red_aa0000.png" alt="View Source Code on GitHub" loading="lazy">
-    </a>
-    <div class="container">
-        <div class="notice">
-            🔒 This tool runs completely on your device. No data is uploaded or sent to any server. Your privacy is 100% protected.
-        </div>
-        <h1>PDF Dark Mode Converter</h1>
-        <label for="fileInput" class="custom-file-upload">Choose PDF File</label>
-        <input type="file" id="fileInput" class="file-input" accept="application/pdf">
-        <div id="progressContainer">
-            <div id="progressBar"></div>
-            <div id="progressText">0/0</div>
-        </div>
-        <button id="downloadBtn">Download failed? Click here</button>
-        <div id="pdfContainer"></div>
-    </div>
-
     <script>
+        // Matrix background animation
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = "#00ff00";
+            ctx.font = `${fontSize}px "Courier New"`;
+
+            drops.forEach((y, x) => {
+                const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+                ctx.fillText(text, x * fontSize, y * fontSize);
+
+                if (y * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[x] = 0;
+                }
+                drops[x]++;
+            });
+        }
+
+        setInterval(drawMatrix, 50);
+
+        // File upload logic
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const pdfContainer = document.getElementById('pdfContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
         let modifiedPdfBytes;
         let originalFileName = "";
 
-        function handleFile(file) {
-            originalFileName = file.name.replace(/\.pdf$/i, '');
-            const fileReader = new FileReader();
-            fileReader.onload = async function() {
-                document.getElementById('progressContainer').style.display = 'block';
-                await renderPDF(new Uint8Array(this.result));
-            };
-            fileReader.readAsArrayBuffer(file);
-        }
+        uploadBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
 
-        document.getElementById('fileInput').addEventListener('change', function(event) {
+        fileInput.addEventListener('change', (event) => {
             if (event.target.files.length > 0) {
                 handleFile(event.target.files[0]);
             }
         });
+
+        downloadBtn.addEventListener('click', triggerDownload);
 
         document.body.addEventListener('dragover', function(event) {
             event.preventDefault();
@@ -190,6 +327,16 @@
                 handleFile(event.dataTransfer.files[0]);
             }
         });
+
+        async function handleFile(file) {
+            originalFileName = file.name.replace(/\.pdf$/i, '');
+            const fileReader = new FileReader();
+            fileReader.onload = async function() {
+                document.getElementById('progressContainer').style.display = 'block';
+                await renderPDF(new Uint8Array(this.result));
+            };
+            fileReader.readAsArrayBuffer(file);
+        }
 
         async function renderPDF(pdfData) {
             const pdfDoc = await PDFLib.PDFDocument.create();
@@ -261,7 +408,11 @@
             }
         }
 
-        document.getElementById('downloadBtn').addEventListener('click', triggerDownload);
+        const toggleThemeIcon = document.getElementById('toggleThemeIcon');
+
+        toggleThemeIcon.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+        });
     </script>
 </body>
 </html>
