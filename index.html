@@ -247,25 +247,31 @@
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
 
+        // Set canvas dimensions to match the window size
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // Matrix characters and font size
         const matrixChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array(Math.floor(columns)).fill(1);
+        const fontSize = 14; // Adjusted font size for normal appearance
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = Array(columns).fill(1);
 
         function drawMatrix() {
+            // Clear the canvas with a semi-transparent black rectangle
             ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+            // Set the font style and color for the matrix characters
             ctx.fillStyle = "#00ff00";
             ctx.font = `${fontSize}px "Courier New"`;
 
+            // Draw the matrix characters
             drops.forEach((y, x) => {
                 const text = matrixChars[Math.floor(Math.random() * matrixChars.length)];
                 ctx.fillText(text, x * fontSize, y * fontSize);
 
+                // Reset the drop to the top of the canvas with a random chance
                 if (y * fontSize > canvas.height && Math.random() > 0.975) {
                     drops[x] = 0;
                 }
@@ -273,7 +279,16 @@
             });
         }
 
+        // Redraw the matrix every 50 milliseconds
         setInterval(drawMatrix, 50);
+
+        // Ensure the canvas resizes properly when the window is resized
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            drops.length = Math.floor(canvas.width / fontSize);
+            drops.fill(1);
+        });
 
         // File upload logic
         const fileInput = document.getElementById('fileInput');
