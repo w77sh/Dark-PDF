@@ -427,7 +427,7 @@
                     canvasContext: ctx,
                     viewport: viewport
                 };
-                await page.render(renderContext).promise;
+                await page.render(renderContext).promise();
 
                 // Apply dark mode effect only to text
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -438,7 +438,7 @@
                     const green = data[j + 1];
                     const blue = data[j + 2];
 
-                    // Check if the pixel is part of text (e.g., dark colors)
+                    // Detect dark text pixels and invert them
                     if (red < 128 && green < 128 && blue < 128) {
                         data[j] = 255 - red;     // Invert Red
                         data[j + 1] = 255 - green; // Invert Green
