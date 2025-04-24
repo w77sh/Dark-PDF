@@ -199,26 +199,6 @@
         body.light-mode .toggle-icon svg {
             fill: black;
         }
-
-        footer {
-            margin-top: 20px;
-            font-size: 12px;
-            color: #00ff00;
-            text-align: center;
-        }
-
-        body.light-mode footer {
-            color: black;
-        }
-
-        footer a {
-            color: #00ff00;
-            text-decoration: underline;
-        }
-
-        body.light-mode footer a {
-            color: black;
-        }
     </style>
 </head>
 <body>
@@ -226,8 +206,9 @@
     
     <!-- Toggle Icon in Corner -->
     <div class="toggle-icon" id="toggleThemeIcon" title="Toggle Light/Dark Mode">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-            <path d="M8 0a7.5 7.5 0 1 0 7.5 7.5A7.5 7.5 0 0 0 8 0zm0 13.5a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"></path>
+        <svg id="themeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <!-- Default Moon Icon for Dark Mode -->
+            <path id="themePath" d="M21.75 15.25A9.75 9.75 0 0 1 8.75 2.25a9.75 9.75 0 1 0 13 13z"></path>
         </svg>
     </div>
 
@@ -409,9 +390,23 @@
         }
 
         const toggleThemeIcon = document.getElementById('toggleThemeIcon');
+        const themePath = document.getElementById('themePath');
 
         toggleThemeIcon.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
+            if (document.body.classList.contains('light-mode')) {
+                // Change to Sun Icon for Light Mode
+                themePath.setAttribute(
+                    'd',
+                    'M12 4.75a1 1 0 0 1 1-1h1.5a1 1 0 0 1 0 2H13a1 1 0 0 1-1-1zm0 14.5a1 1 0 0 1 1-1h1.5a1 1 0 0 1 0 2H13a1 1 0 0 1-1-1zm7.25-7.25a1 1 0 0 1 1-1v-1.5a1 1 0 0 1-2 0V12a1 1 0 0 1 1 1zm-14.5 0a1 1 0 0 1 1-1v-1.5a1 1 0 0 1-2 0V12a1 1 0 0 1 1 1zm10.6-5.1a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L15.4 6.9a1 1 0 0 1 0-1.4zm-7.2 7.2a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L6.9 15.4a1 1 0 0 1 0-1.4zm7.2 7.2a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L15.4 21.1a1 1 0 0 1 0-1.4zm-7.2-7.2a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L6.9 15.4a1 1 0 0 1 0-1.4zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'
+                );
+            } else {
+                // Change to Moon Icon for Dark Mode
+                themePath.setAttribute(
+                    'd',
+                    'M21.75 15.25A9.75 9.75 0 0 1 8.75 2.25a9.75 9.75 0 1 0 13 13z'
+                );
+            }
         });
     </script>
 </body>
