@@ -19,6 +19,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            user-select: none; /* Prevent text selection */
+            -webkit-user-select: none; /* For Safari */
+            -ms-user-select: none; /* For Internet Explorer */
         }
 
         body.light-mode {
@@ -76,6 +79,9 @@
             text-transform: uppercase;
             transition: background 0.3s, color 0.3s;
             margin: 5px;
+            user-select: none; /* Prevent selection */
+            -webkit-user-select: none; /* For Safari */
+            -ms-user-select: none; /* For Internet Explorer */
         }
 
         body.light-mode .upload-btn {
@@ -158,6 +164,9 @@
             height: 40px;
             z-index: 1000;
             transition: transform 0.3s ease;
+            user-select: auto; /* Allow selection for interactive elements */
+            -webkit-user-select: auto;
+            -ms-user-select: auto;
         }
 
         .github-icon:hover {
@@ -184,6 +193,9 @@
             cursor: pointer;
             z-index: 1000;
             transition: transform 0.3s ease;
+            user-select: auto; /* Allow selection for interactive elements */
+            -webkit-user-select: auto;
+            -ms-user-select: auto;
         }
 
         .toggle-icon:hover {
@@ -240,12 +252,26 @@
             color: black;
             font-weight: bold;
             transition: transform 0.3s ease, background-color 0.3s ease;
+            user-select: auto; /* Allow selection for interactive elements */
+            -webkit-user-select: auto;
+            -ms-user-select: auto;
         }
 
         .font-toggle:hover {
             transform: scale(1.1);
             background-color: black;
             color: #00ff00;
+        }
+
+        body.light-mode .font-toggle {
+            background-color: black;
+            color: white;
+            border: 2px solid black;
+        }
+
+        body.light-mode .font-toggle:hover {
+            background-color: white;
+            color: black;
         }
 
         /* Pixelated Minecraft-style font */
@@ -290,7 +316,7 @@
         <button class="upload-btn" id="uploadBtn">Upload PDF</button>
         <div id="progressContainer">
             <div id="progressBar"></div>
-            <div id="progressText">0%</div>
+            <div id="progressText">0%</        </div>
         </div>
         <div id="pdfContainer"></div>
         <div id="downloadBtn">Download failed? Click here</div>
@@ -488,7 +514,7 @@
                 // Change to Sun Icon for Light Mode
                 themePath.setAttribute(
                     'd',
-                    'M12 4.75a1 1 0 0 1 1-1h1.5a1 1 0 0 1 0 2H13a1 1 0 0 1-1-1zm0 14.5a1 1 0 0 1 1-1h1.5a1 1 0 0 1 0 2H13a1 1 0 0 1-1-1zm7.25-7.25a1 1 0 0 1 1-1v-1.5a1 1 0 0 1-2 0V12a1 1 0 0 1 1 1zm-14.5 0a1 1 0 0 1 1-1v-1.5a1 1 0 0 1-2 0V12a1 1 0 0 1 1 1zm10.6-5.1a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L15.4 6.9a1 1 0 0 1 0-1.4zm-7.2 7.2a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L6.9 15.4a1 1 0 0 1 0-1.4zm7.2 7.2a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L15.4 21.1a1 1 0 0 1 0-1.4zm-7.2-7.2a1 1 0 0 1 1.4 0l1.06 1.06a1 1 0 0 1-1.4 1.4L6.9 15.4a1 1 0 0 1 0-1.4zM12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z'
+                    'M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z'
                 );
             } else {
                 // Change to Moon Icon for Dark Mode
