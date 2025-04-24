@@ -220,6 +220,48 @@
         footer a:hover {
             color: #ff0000; /* Red hover effect for both modes */
         }
+
+        /* Font toggle button styling */
+        .font-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1000;
+            background-color: #00ff00;
+            border: 2px solid #00ff00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: black;
+            font-weight: bold;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .font-toggle:hover {
+            transform: scale(1.1);
+            background-color: black;
+            color: #00ff00;
+        }
+
+        /* Pixelated Minecraft-style font */
+        @font-face {
+            font-family: "Minecraft";
+            src: url("https://fonts.cdnfonts.com/s/17268/Minecraft-Regular.woff") format("woff");
+        }
+
+        body.pixel-font {
+            font-family: "Minecraft", monospace;
+        }
+
+        /* Terminal-like font */
+        body.terminal-font {
+            font-family: "Courier New", Courier, monospace;
+        }
     </style>
 </head>
 <body>
@@ -257,6 +299,11 @@
     <footer>
         Made with ❤️ by <a href="https://github.com/w77sh" target="_blank">w77sh</a>
     </footer>
+
+    <!-- Font Toggle Button -->
+    <div class="font-toggle" id="fontToggle" title="Toggle Font">
+        A
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
@@ -444,6 +491,23 @@
                 );
             }
         });
+
+        const fontToggle = document.getElementById('fontToggle');
+
+        fontToggle.addEventListener('click', () => {
+            if (document.body.classList.contains('pixel-font')) {
+                // Switch to terminal-like font
+                document.body.classList.remove('pixel-font');
+                document.body.classList.add('terminal-font');
+            } else {
+                // Switch to pixelated Minecraft-style font
+                document.body.classList.remove('terminal-font');
+                document.body.classList.add('pixel-font');
+            }
+        });
+
+        // Set default font to terminal-like font
+        document.body.classList.add('terminal-font');
     </script>
 </body>
 </html>
