@@ -199,6 +199,27 @@
         body.light-mode .toggle-icon svg {
             fill: black;
         }
+
+        /* Footer styling */
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        footer a {
+            color: white; /* White for dark mode */
+            text-decoration: underline;
+            transition: color 0.3s ease;
+        }
+
+        body.light-mode footer a {
+            color: black; /* Black for light mode */
+        }
+
+        footer a:hover {
+            color: #ff0000; /* Red hover effect for both modes */
+        }
     </style>
 </head>
 <body>
